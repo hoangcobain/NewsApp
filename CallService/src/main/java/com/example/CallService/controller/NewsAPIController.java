@@ -1,5 +1,6 @@
 package com.example.CallService.controller;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import com.example.CallService.entity.Category;
 import com.example.CallService.entity.News;
 import com.example.CallService.entity.NewsCategory;
+
 
 @RestController
 @RequestMapping("/api")
@@ -41,10 +44,12 @@ public class NewsAPIController {
 				response.getBody().getThumbnail(), response.getBody().getShortdescription(),
 				response.getBody().getContent(), responseCategory.getBody());
 
+
 		return newsCategory;
 	}
 
 	@GetMapping("/news")
+
 	public List<NewsCategory> getAllNew() {
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<List<NewsCategory>> responseEntity = restTemplate.exchange(urlNews, HttpMethod.GET, null,
@@ -69,6 +74,7 @@ public class NewsAPIController {
 
 	}
 
+
 	@DeleteMapping("/news/{id}")
 	public String deleteNews(@PathVariable int id) {
 		RestTemplate restTemplate = new RestTemplate();
@@ -84,11 +90,13 @@ public class NewsAPIController {
 		News response = restTemplate.postForObject(urlNews, news, News.class);
 		return "thêm thành công";
 
+
 		
 		
 	}
 
 //	Category
+
 	@GetMapping("/category/{id}")
 	public Category getCategory(@PathVariable int id) {
 		RestTemplate restTemplate = new RestTemplate();
