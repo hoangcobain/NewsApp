@@ -37,9 +37,9 @@ public class CommentController {
 	}
 
 	@DeleteMapping("/{id}")
-	public String deleteComment(@PathVariable int commentId) {
-		commentService.deleteComment(commentId);
-		return "xoá thành công id" + commentId;
+	public String deleteComment(@PathVariable int id) {
+		commentService.deleteComment(id);
+		return "xoá thành công id" + id;
 	}
 
 	@PostMapping("/update")
@@ -49,8 +49,8 @@ public class CommentController {
 	}
 
 	@GetMapping("/{id}")
-	public Comment getCommentById(@PathVariable int commentId) {
-		Comment comment = commentService.getCommentById(commentId);
+	public Comment getCommentById(@PathVariable int id) {
+		Comment comment = commentService.getCommentById(id);
 		return comment;
 	}
 
