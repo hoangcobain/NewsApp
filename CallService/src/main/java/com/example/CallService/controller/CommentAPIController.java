@@ -28,8 +28,9 @@ import com.example.CallService.entity.UserRole;
 @RequestMapping("/api")
 public class CommentAPIController {
 
-	String urlComment = "http://localhost:8085/comment";
-
+	String urlComment = "http://localhost:8091/comment";
+	String urlNews = "http://localhost:8081/news";
+	String urlUser = "http://localhost:8083/user";
 	@GetMapping("/comment/{id}")
 	public NewsUserComment getComment(@PathVariable int id) {
 		RestTemplate restTemplate = new RestTemplate();
@@ -37,15 +38,17 @@ public class CommentAPIController {
 		ResponseEntity<Comment> response = restTemplate.getForEntity(urlComment + "/" + id, Comment.class);
 
 		ResponseEntity<User> responseUser = restTemplate
-				.getForEntity(urlComment + "/" + response.getBody().getUser_id(), User.class);
+				.getForEntity(urlUser + "/" + response.getBody().getUser_id(), User.class);
 
-		ResponseEntity<News> responseNews = restTemplate.getForEntity(urlComment + "/" + response.getBody().getNew_id(),
+		ResponseEntity<News> responseNews = restTemplate.getForEntity(urlNews + "/" + response.getBody().getNew_id(),
 				News.class);
 
 		NewsUserComment newsUserComment = new NewsUserComment(response.getBody().getId(),
 				response.getBody().getContent(), responseUser.getBody(), responseNews.getBody());
 
+		System.out.println(newsUserComment);
 		return newsUserComment;
+		
 	}
 
 	@GetMapping("/comment")
@@ -68,8 +71,8 @@ public class CommentAPIController {
 			User user = new User();
 			News news = new News();
 
-			user = restTemplate.getForObject(urlComment + "/" + comment.getUser_id(), User.class);
-			news = restTemplate.getForObject(urlComment + "/" + comment.getNew_id(), News.class);
+			user = restTemplate.getForObject(urlUser + "/" + comment.getUser_id(), User.class);
+			news = restTemplate.getForObject(urlNews + "/" + comment.getNew_id(), News.class);
 
 			NewsUserComment newsUserComment = new NewsUserComment();
 			newsUserComment = restTemplate.getForObject(urlComment + "/" + comment.getId(), NewsUserComment.class);

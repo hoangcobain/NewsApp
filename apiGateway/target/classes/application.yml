@@ -1,0 +1,33 @@
+server:
+   port: 9089
+
+eureka:
+   instance:
+      hostname: localhost
+
+spring:
+   application:
+      name: api-gateway
+   cloud:
+      gateway:
+         routes:
+         -  id: USER-SERVICE
+            uri: http://localhost:8083/
+            predicates:
+            - Path=/user/**
+         -  id: ROLE-SERVICE
+            uri: http://localhost:8084/
+            predicates:
+            - Path=/role/**
+         -  id: NEWS-SERVICE
+            uri: http://localhost:8081/
+            predicates:
+            - Path=/news/**
+         -  id: COMMENT-SERVICE
+            uri: http://localhost:8091/
+            predicates:
+            - Path=/comment/**
+         -  id: CATEGORY-SERVICE
+            uri: http://localhost:8082/
+            predicates:
+            - Path=/category/**
