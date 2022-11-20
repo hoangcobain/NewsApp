@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,12 +32,14 @@ public class CategoryController {
 	private CategoryService categoryService;
 
 	@PostMapping("")
+	@CachePut(value = "category", key = "#category.id")
 	public Category addCategory(@RequestBody Category category) {
 		categoryService.addCategory(category);
 		return category;
 	}
 
 	@DeleteMapping("/{id}")
+	@CacheEvict(value = "category", key = "#id")
 	public String delete(@PathVariable int id) {
 		categoryService.deleteCategory(id);
 		return "xoá thành công id" + id;
@@ -49,6 +52,7 @@ public class CategoryController {
 	}
 
 	@GetMapping("/{id}")
+	@Cacheable(value = "category", key = "#id")
 	public Category getCustomerById(@PathVariable int id) {
 		Category Category = categoryService.getCategoryById(id);
 		return Category;

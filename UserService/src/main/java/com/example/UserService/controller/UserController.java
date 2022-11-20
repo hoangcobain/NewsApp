@@ -3,6 +3,9 @@ package com.example.UserService.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +27,14 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("")
+	@CachePut(value = "user", key = "#User.id")
 	public User addUser(@RequestBody User User) {
 		userService.addUser(User);
 		return User;
 	}
 
 	@DeleteMapping("/{UserId}")
+	@CacheEvict(value = "user", key = "#UserId")
 	public String deleteUser(@PathVariable int UserId) {
 		userService.deleteUser(UserId);
 		return "xoá thành công id" + UserId;
@@ -42,6 +47,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
+	@Cacheable(value = "user", key = "#id")
 	public User getUserById(@PathVariable int id) {
 		User User = userService.getUserById(id);
 		return User;
