@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,12 +32,14 @@ public class NewsController {
 	private NewsService newsService;
 
 	@PostMapping("")
+	@CachePut(value = "new", key = "#news.id")
 	public News addNews(@RequestBody News news) {
 		newsService.addnews(news);
 		return news;
 	}
 
 	@DeleteMapping("/{id}")
+	@CacheEvict(value = "new", key = "#id")
 	public String delete(@PathVariable int id) {
 		newsService.deleteNews(id);
 		return "xoá thành công id" + id;
@@ -49,6 +52,7 @@ public class NewsController {
 	}
 
 	@GetMapping("/{id}")
+	@Cacheable(value = "new", key = "#id")
 	public News getNewsById(@PathVariable int id) {
 		News news = newsService.getNewsById(id);
 		return news;
