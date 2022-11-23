@@ -31,12 +31,14 @@ public class CommentController {
 	private CommentService commentService;
 
 	@PostMapping("")
+	@CachePut(value = "comment", key = "#comment.id")
 	public Comment addComment(@RequestBody Comment comment) {
 		commentService.addComment(comment);
 		return comment;
 	}
 
 	@DeleteMapping("/{id}")
+	@CacheEvict(value = "comment", key = "#id")
 	public String deleteComment(@PathVariable int id) {
 		commentService.deleteComment(id);
 		return "xoá thành công id" + id;
@@ -49,6 +51,7 @@ public class CommentController {
 	}
 
 	@GetMapping("/{id}")
+	@Cacheable(value = "comment", key = "#id")
 	public Comment getCommentById(@PathVariable int id) {
 		Comment comment = commentService.getCommentById(id);
 		return comment;
